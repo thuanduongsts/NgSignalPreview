@@ -33,6 +33,11 @@
               "src/styles.scss",
               "node_modules/bootstrap/dist/css/bootstrap.css"
             ],
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "src/styles/product"
+              ]
+            },
             "scripts": []
           },
           "configurations": {
@@ -97,6 +102,11 @@
               "src/styles.scss",
               "node_modules/bootstrap/dist/css/bootstrap.css"
             ],
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "src/styles/product"
+              ]
+            },
             "scripts": []
           }
         }
