@@ -1,0 +1,16 @@
+.cart-icon {
+  font-size: 24px;
+  cursor: pointer;
+
+  &:hover {
+    color: #646669;
+  }
+}
+
+.cart li {
+  width: 100%;
+
+  .cart-title {
+    width: 300px;
+  }
+}
