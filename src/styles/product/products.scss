@@ -1,6 +1,6 @@
 :host {
   display: flex;
-  padding: 30px 10%;
+  padding: 30px;
   gap: 80px;
 
   .icon {
@@ -43,6 +43,10 @@
     .text-price {
       font-size: 15px;
       color: red;
+    }
+
+    img {
+      height: 150px;
     }
   }
 }
