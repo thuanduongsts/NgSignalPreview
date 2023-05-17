@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Product } from '../../../core/models/product.model';
 import { CartService } from '../../../core/services/cart.service';
 import { ProductService } from '../../../core/services/product.service';
+import { ActivatedRoute } from '@angular/router';
+import { switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-products',
@@ -15,11 +17,20 @@ export class ProductsComponent implements OnInit {
 
   public constructor(
     private productService: ProductService,
-    private cartService: CartService
+    private cartService: CartService,
+    private activatedRoute: ActivatedRoute
   ) { }
 
   public ngOnInit(): void {
-    this.productService.getProducts().subscribe(data => {
+    this.activatedRoute.queryParams.pipe(
+      switchMap((params) => {
+        const category = params['categories'];
+        if (category) {
+          return this.productService.getProductsWithCategory(category)
+        }
+        return this.productService.getProducts();
+      })
+    ).subscribe(data => {
       this.products = data;
     });
   }
