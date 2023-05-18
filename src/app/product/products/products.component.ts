@@ -22,15 +22,16 @@ export class ProductsComponent implements OnInit {
   ) { }
 
   public ngOnInit(): void {
-    this.activatedRoute.queryParams.pipe(
+    this.activatedRoute.params.pipe(
       switchMap((params) => {
-        const category = params['categories'];
+        const category = params['category'];
         if (category) {
           return this.productService.getProductsWithCategory(category)
         }
         return this.productService.getProducts();
       })
-    ).subscribe(data => {
+    )
+    .subscribe(data => {
       this.products = data;
     });
   }

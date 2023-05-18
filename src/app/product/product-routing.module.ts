@@ -4,6 +4,7 @@ import { ProductBoardComponent } from './product-board/product-board.component';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', component: ProductBoardComponent },
+  { path: 'categories/:category', component: ProductBoardComponent },
 ];
 
 @NgModule({

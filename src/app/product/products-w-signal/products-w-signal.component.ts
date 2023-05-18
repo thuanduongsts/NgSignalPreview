@@ -21,9 +21,9 @@ export class ProductsWSignalComponent {
   ) { }
 
   public ngOnInit(): void {
-    this.activatedRoute.queryParams.pipe(
+    this.activatedRoute.params.pipe(
       switchMap((params) => {
-        const category = params['categories'];
+        const category = params['category'];
         if (category) {
           return this.productService.getProductsWithCategory(category)
         }
