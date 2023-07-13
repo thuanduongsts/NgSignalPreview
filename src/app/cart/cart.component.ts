@@ -1,5 +1,4 @@
-import { Component } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Component, Signal, WritableSignal } from '@angular/core';
 import { CartItem } from '../../core/models/product.model';
 import { CartService } from '../../core/services/cart.service';
 
@@ -10,16 +9,14 @@ import { CartService } from '../../core/services/cart.service';
 })
 export class CartComponent {
 
-  public cartItems: CartItem[] = [];
+  public cartItems!: WritableSignal<CartItem[]>;
 
-  public get totalPrice$(): Observable<number> {
-    return this.cartService.totalPrice$;
+  public get totalPrice(): Signal<number> {
+    return this.cartService.totalPrice;
   }
 
   public constructor(private cartService: CartService) {
-    this.cartService.cartItems$.subscribe(data => {
-      this.cartItems = data;
-    });
+    this.cartItems = this.cartService.cartItems;
   }
 
   public increment(item: CartItem): void {

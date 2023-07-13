@@ -15,4 +15,15 @@
     min-height: calc(100vh - 56px);
   }
 
+  .search-group {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    
+    .search-input {
+      height: 35px;
+      width: 250px;
+      border-radius: 10px;
+    }
+  }
 }

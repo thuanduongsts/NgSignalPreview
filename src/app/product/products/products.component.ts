@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { switchMap } from 'rxjs';
 import { Product } from '../../../core/models/product.model';
 import { CartService } from '../../../core/services/cart.service';
 import { ProductService } from '../../../core/services/product.service';
-import { ActivatedRoute } from '@angular/router';
-import { switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-products',
@@ -18,22 +18,12 @@ export class ProductsComponent implements OnInit {
   public constructor(
     private productService: ProductService,
     private cartService: CartService,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private router: Router
   ) { }
 
   public ngOnInit(): void {
-    this.activatedRoute.params.pipe(
-      switchMap((params) => {
-        const category = params['category'];
-        if (category) {
-          return this.productService.getProductsWithCategory(category)
-        }
-        return this.productService.getProducts();
-      })
-    )
-    .subscribe(data => {
-      this.products = data;
-    });
+    this.getProducts();
   }
 
   public addToCart(product: Product): void {
@@ -45,5 +35,42 @@ export class ProductsComponent implements OnInit {
     this.productService.gerProduct(product.id).subscribe(data => {
       this.product = data;
     })
+  }
+
+  private getProducts(): void {
+    const url = this.router.url;
+    if (url.includes('/products/search')) {
+      this.searchWithProducts();
+      return
+    }
+    this.getProductsWithCategory();
+  }
+
+  private searchWithProducts(): void {
+    this.activatedRoute.queryParams.pipe(
+      switchMap((query) => {
+        const search = query['q'];
+        if (search) {
+          return this.productService.searchProduct(search);
+        }
+        return this.productService.getProducts();
+      })
+    ).subscribe((data) => {
+      this.products = data;
+    });
+  }
+
+  private getProductsWithCategory(): void {
+    this.activatedRoute.params.pipe(
+      switchMap((params) => {
+        const category = params['category'];
+        if (category) {
+          return this.productService.getProductsWithCategory(category)
+        }
+        return this.productService.getProducts();
+      })
+    ).subscribe(data => {
+      this.products = data;
+    });
   }
 }
