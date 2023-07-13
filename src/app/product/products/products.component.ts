@@ -1,4 +1,4 @@
-import { ApplicationRef, Component, DoCheck, ElementRef, OnInit } from '@angular/core';
+import { ApplicationRef, Component, DoCheck, ElementRef, NgZone, OnInit } from '@angular/core';
 import { Product } from '../../../core/models/product.model';
 import { CartService } from '../../../core/services/cart.service';
 import { ProductService } from '../../../core/services/product.service';
@@ -20,7 +20,8 @@ export class ProductsComponent implements OnInit, DoCheck {
     private cartService: CartService,
     private activatedRoute: ActivatedRoute,
     private appRef: ApplicationRef,
-    private el: ElementRef
+    private el: ElementRef,
+    private ngZone: NgZone,
   ) {
     requestAnimationFrame(() => appRef.tick())
   }
@@ -34,11 +35,10 @@ export class ProductsComponent implements OnInit, DoCheck {
         }
         return this.productService.getProducts();
       })
-    )
-      .subscribe(data => {
-        this.products = data;
-        this.appRef.tick();
-      });
+    ).subscribe(data => {
+      this.products = data;
+      // this.appRef.tick();
+    });
   }
 
   public ngDoCheck(): void {
@@ -47,9 +47,11 @@ export class ProductsComponent implements OnInit, DoCheck {
 
   public blink() {
     this.el.nativeElement.classList.add('highlight');
-    setTimeout(() => {
-      this.el.nativeElement.classList.remove('highlight');
-    }, 1500);
+    this.ngZone.runOutsideAngular(() => {
+      setTimeout(() => {
+        this.el.nativeElement.classList.remove('highlight');
+      }, 1500);
+    })
   }
 
   public addToCart(product: Product): void {
@@ -60,7 +62,7 @@ export class ProductsComponent implements OnInit, DoCheck {
     this.product = null;
     this.productService.gerProduct(product.id).subscribe(data => {
       this.product = data;
-      this.appRef.tick();
+      // this.appRef.tick();
     })
   }
 }

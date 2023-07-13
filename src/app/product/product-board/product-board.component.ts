@@ -1,4 +1,4 @@
-import { Component, DoCheck, ElementRef } from '@angular/core';
+import { Component, DoCheck, ElementRef, NgZone } from '@angular/core';
 
 @Component({
   selector: 'app-product-board',
@@ -8,14 +8,17 @@ import { Component, DoCheck, ElementRef } from '@angular/core';
 export class ProductBoardComponent implements DoCheck {
 
   public constructor(
-    private el: ElementRef
+    private el: ElementRef,
+    private ngZone: NgZone
   ) { }
 
   public blink(): void {
     this.el.nativeElement.classList.add('highlight');
-    setTimeout(() => {
-      this.el.nativeElement.classList.remove('highlight');
-    }, 1500);
+    this.ngZone.runOutsideAngular(() => {
+      setTimeout(() => {
+        this.el.nativeElement.classList.remove('highlight');
+      }, 1500);
+    });
   }
 
   public ngDoCheck(): void {

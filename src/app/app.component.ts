@@ -1,4 +1,4 @@
-import { Component, DoCheck, ElementRef } from '@angular/core';
+import { Component, DoCheck, ElementRef, NgZone } from '@angular/core';
 import { Observable } from 'rxjs';
 import { CartItem } from '../core/models/product.model';
 import { CartService } from '../core/services/cart.service';
@@ -17,6 +17,7 @@ export class AppComponent implements DoCheck {
   public constructor(
     private cartService: CartService,
     private el: ElementRef,
+    private ngZone: NgZone
   ) { }
 
   public ngDoCheck(): void {
@@ -25,9 +26,11 @@ export class AppComponent implements DoCheck {
 
   public blink() {
     this.el.nativeElement.classList.add('highlight');
-    setTimeout(() => {
-      this.el.nativeElement.classList.remove('highlight');
-    }, 1500);
+    this.ngZone.runOutsideAngular(() => {
+      setTimeout(() => {
+        this.el.nativeElement.classList.remove('highlight');
+      }, 1500);
+    })
   }
 
 }
