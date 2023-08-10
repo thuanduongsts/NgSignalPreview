@@ -1,14 +1,16 @@
 <header>
   <nav class="navbar navbar-dark bg-dark">
-    <app-categories></app-categories>
+    <div class="search-group">
+      <app-categories></app-categories>
+      <input type="text" class="search-input" #search [value]="searchText()" (input)="searchChange(search.value)">
+    </div>
+
     <ul class="navbar-nav">
 
       <li class="nav-item">
-        <a class="nav-link badge-primary"
-          [routerLink]="'/cart'"
-          [routerLinkActive]="'active'">
+        <a class="nav-link badge-primary" [routerLink]="'/cart'" [routerLinkActive]="'active'">
           <i class="fa"> &#xf07a;</i>
-          <span class="badge badge-light">{{ (cartItems$ | async)?.length }}</span>
+          <span class="badge badge-light">{{ cartItems().length }}</span>
         </a>
       </li>
 

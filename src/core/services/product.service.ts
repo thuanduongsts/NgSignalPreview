@@ -1,14 +1,23 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, map } from 'rxjs';
+import { Observable, Subject, map } from 'rxjs';
 import { Product } from '../models/product.model';
 
 @Injectable()
 export class ProductService {
 
   private readonly _baseUrl = 'https://dummyjson.com';
-  
+  private readonly _searchText$: Subject<string> = new Subject<string>();
+
+  get searchText$(): Observable<string> {
+    return this._searchText$.asObservable();
+  }
+
   public constructor(private http: HttpClient) { }
+
+  public setSearchText$(text: string): void {
+    this._searchText$.next(text);
+  }
 
   public getProducts(): Observable<Product[]> {
     return this.http.get<any>(this._baseUrl + '/products?limit=5')

@@ -1,9 +1,11 @@
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
+import { CartService } from 'src/core/services/cart.service';
+import { ProductService } from '../core/services/product.service';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { CartService } from 'src/core/services/cart.service';
 import { CartComponent } from './cart/cart.component';
 import { CategoriesModule } from './categories/categories.module';
 
@@ -13,9 +15,10 @@ import { CategoriesModule } from './categories/categories.module';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    CategoriesModule
+    CategoriesModule,
+    ReactiveFormsModule,
   ],
-  providers: [CartService],
+  providers: [CartService, ProductService],
   bootstrap: [AppComponent],
 })
 export class AppModule { }
